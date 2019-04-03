@@ -49,7 +49,7 @@ class MemberController {
   }
 
   static update(req, res) {
-    Member.findOneAndRemove(req.params.id, {
+    Member.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
       address: req.body.address,
       zipcode: req.body.zipcode,
