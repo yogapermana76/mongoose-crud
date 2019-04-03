@@ -12,6 +12,16 @@ class MemberController {
       })
   }
 
+  static findOne(req, res) {
+    Member.findById(req.params.id)
+      .then((foundMember)=> {
+        res.status(201).json(foundMember)
+      })
+      .catch(err => {
+        res.status(500).json(err.message)
+      })
+  }
+
   static create(req, res) {
     Member.create({
       name: req.body.name,

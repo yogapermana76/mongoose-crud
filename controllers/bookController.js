@@ -11,6 +11,16 @@ class BookController {
       })
   }
 
+  static findOne(req, res) {
+    Book.findById(req.params.id)
+      .then((foundBook) => {
+        res.status(201).json(foundBook)
+      })
+      .catch(err => {
+        res.status(500).json(err.message)
+      })
+  }
+
   static create(req, res) {
     Book.create({
       isbn: req.body.isbn,

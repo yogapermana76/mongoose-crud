@@ -5,12 +5,34 @@ class TransactionController {
     Transaction.find()
     .populate('member')
     .populate('booklist')
-      .then(transactions => {
-        res.status(200).json(transactions)
+      .then((transactions)=> {
+        if(!req.query.bookId) {
+          res.status(200).json(transactions)
+        } else {
+          let book = []
+          transactions.forEach( el => {
+            el.bookList.forEach( bookId => {
+              if(bookId._id == req.query.bookId) {
+                book.push(el)
+              }
+            })
+          })
+          res.status(200).json(book)
+        }
       })
       .catch(err => {
         res.status(500).json(err)
-    })
+      })
+  }
+
+  static findOne(req, res) {
+    Transaction.findById(req.params.id)
+      .then((foundTransaction)=> {
+        res.status(201).json(foundTransaction)
+      })
+      .catch(err => {
+        res.status(500).json(err.message)
+      })
   }
 
   static create(req, res) {
@@ -48,7 +70,7 @@ class TransactionController {
   }
 
   static delete(req, res) {
-    Transaction.findByIdAndDelete(req.params)
+    Transaction.findByIdAndDelete(req.params.id)
       .then(() => {
         res.status(200).json('successfull deleted')
       })

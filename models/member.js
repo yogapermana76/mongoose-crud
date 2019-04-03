@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-const memberSchema = new mongoose.Schema({
+const memberSchema = new Schema({
   name: String,
   address: String,
   zipcode: String,
@@ -8,7 +9,7 @@ const memberSchema = new mongoose.Schema({
     type: String,
     validate: [{
       validator: function(email) {
-        Member.findOne({
+        mongoose.model('Member', memberSchema).findOne({
           email: email
         })
           .then(found => {
@@ -18,9 +19,10 @@ const memberSchema = new mongoose.Schema({
           })
       },
       validator: function(email) {
-        var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        let re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         return re.test(email)
-      }
+      },
+      message: 'format email salah'
     }]
   },
   phone: {
